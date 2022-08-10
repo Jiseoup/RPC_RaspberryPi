@@ -51,5 +51,17 @@ program RPC_PROG {
 }=0x20000001;
 ```
 
-**[Not Updated yet]**  
-**Writing Now ...**
+### Generate Stub File
+* -a : generate all files, including samples.
+* -C : ANSI C mode.
+```console
+$ rpcgen -a -C rpc.x
+```
+
+You can see the generated stub file.
+```console
+pi@raspberrypi:~/RPC $ ls
+Makefile.rpc  rpc_client.c  rpc_clnt.c  rpc.h  rpc_server.c  rpc_svc.c  rpc.x
+```
+
+## 3. EDIT CODES AND MAKEFILE
