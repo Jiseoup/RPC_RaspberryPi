@@ -70,10 +70,112 @@ Edit the code as below.
 
 ### rpc_server.c
 ```c
+#include "rpc.h"
 
+int *
+id_1_svc(int *argp, struct svc_req *rqstp)
+{
+	static int result;
+
+	result = *argp; // Assign the recalled data.
+	printf("INTEGER : %d is called\n", result);
+
+	return &result;
+}
+
+char **
+name_1_svc(char **argp, struct svc_req *rqstp)
+{
+	static char *result;
+
+	result = *argp; // Assign the recalled data.
+	printf("STRING : %s is called\n", result);
+	    
+	return &result;
+}
 ```
 
 ### rpc_client.c
 ```c
+#include "rpc.h"
 
+void
+rpc_prog_1(char *host, int a, char* b) // Add parameters. (int a, char* b)
+{
+	CLIENT *clnt;
+	int  *result_1;
+	int  id_1_arg;
+	char * *result_2;
+	char * name_1_arg;
+
+#ifndef	DEBUG
+	clnt = clnt_create (host, RPC_PROG, RPC_VERS, "udp");
+	if (clnt == NULL) {
+		clnt_pcreateerror (host);
+		exit (1);
+	}
+#endif	/* DEBUG */
+
+	// Assigns the data to be called to a variable.
+	id_1_arg = a;
+	name_1_arg = b;
+
+	result_1 = id_1(&id_1_arg, clnt);
+	if (result_1 == (int *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	// When the call is successful.
+	else {
+	    printf("INTEGER : %d\n", *result_1);
+	}
+
+	result_2 = name_1(&name_1_arg, clnt);
+	if (result_2 == (char **) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	// When the call is successful.
+	else{
+	    printf("STRING : %s\n", *result_2);
+	}
+
+#ifndef	DEBUG
+	clnt_destroy (clnt);
+#endif	 /* DEBUG */
+}
+
+
+int
+main (int argc, char *argv[])
+{
+	char *host;
+
+	// Because we added two parameters, change the condition to (argc < 4).
+	if (argc < 4) {
+		printf ("usage: %s server_host INTEGER STRING\n", argv[0]);
+		exit (1);
+	}
+	host = argv[1];
+	rpc_prog_1 (host, atoi(argv[2]), argv[3]);
+exit (0);
+}
 ```
+
+When you have finished editing the code, compile it using the command below.
+* -f : Read FILE as a makefile.  
+	* -f FILE, --file=FILE, --makefile=FILE
+```console
+$ make -f Makefile.rpc
+```
+
+You can see the generated files.
+```console
+pi@raspberrypi:~/RPC $ ls
+Makefile.rpc  rpc_client.c  rpc_clnt.c  rpc.h       rpc_server.c  rpc_svc.c  rpc.x
+rpc_client    rpc_client.o  rpc_clnt.o  rpc_server  rpc_server.o  rpc_svc.o
+```
+
+## 4. TEST THE SAMPLE CODE
+We test the sample code on one `Raspberry Pi`.  
+Of course, **RPC calls** from different `Raspberry Pi` are also possible.  
+
+Open two terminals and call the `localhost` server from the client as shown in the picture below.
