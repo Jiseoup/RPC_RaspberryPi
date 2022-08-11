@@ -178,4 +178,17 @@ rpc_client    rpc_client.o  rpc_clnt.o  rpc_server  rpc_server.o  rpc_svc.o
 We test the sample code on one `Raspberry Pi`.  
 Of course, **RPC calls** from different `Raspberry Pi` are also possible.  
 
-Open two terminals and call the `localhost` server from the client as shown in the picture below.
+### Usage
+* Server  
+```console
+$ ./rpc_server
+``` 
+* Client  
+```console
+$ ./rpc_client {ip_address} {integer} {string}
+```
+
+Open two terminals and call the `localhost` server from the client as shown in the picture below.  
+Run the server first, then run the client.  
+
+<img src="/img/result.png" width="100%" height="100%"/>
