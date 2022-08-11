@@ -64,4 +64,16 @@ pi@raspberrypi:~/RPC $ ls
 Makefile.rpc  rpc_client.c  rpc_clnt.c  rpc.h  rpc_server.c  rpc_svc.c  rpc.x
 ```
 
-## 3. EDIT CODES AND MAKEFILE
+## 3. EDIT CODES AND COMPILE
+Edit the codes `rpc_server.c` and `rpc_client.c` and compile using `Makefile.rpc`.  
+Edit the code as below.
+
+### rpc_server.c
+```c
+
+```
+
+### rpc_client.c
+```c
+
+```
